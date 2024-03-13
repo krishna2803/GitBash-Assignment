@@ -1,0 +1,73 @@
+= Bandit Solutions
+
+// asciidoc supports comments :)
+
+== Level 0
+
+`$ ssh bandit0@bandit.labs.overthewire.org -p 2220` +
+and enter password `bandit0`
+
+== Level 0 -> 1
+`$ ssh bandit0@bandit.labs.overthewire.org -p 2220` +
+`bandit0@bandit:~$ ls` +
+`readme` +
+`bandit0@bandit:~$ cat readme` +
+`[password redacted]`
+// NH2SXQwcBdpmTEzi3bvBHMM9H66vVXjL
+
+== Level 1 -> 2
+`$ ssh bandit1@bandit.labs.overthewire.org -p 2220` +
+`bandit1@bandit:~$ ls` +
+`-` +
+`bandit1@bandit:~$ cat ./-` +
+`[password redacted]`
+// rRGizSaX8Mk1RTb1CNQoXTcYZWU6lgzi
+
+== Level 2 -> 3
+`$ ssh bandit2@bandit.labs.overthewire.org -p 2220` +
+`bandit2@bandit:~$ ls` +
+`spaces in this filename` +
+`bandit2@bandit:~$ cat "spaces in this filename"` +
+`[password redacted]`
+// aBZ0W5EmUfAf7kHTQeOwd8bauFJ2lAiG
+
+
+== Level 3 -> 4
+`$ ssh bandit3@bandit.labs.overthewire.org -p 2220` +
+`bandit3@bandit:~$ ls -l` +
+`total 4` +
+`drwxr-xr-x 2 root root 4096 Oct  5 06:19 inhere` +
+we can see that there is a directory named `inhere` in here +
+`bandit3@bandit:~$ cd inhere` +
+`bandit3@bandit:~/inhere$ ls -lA` +
+`total 4` +
+`-rw-r----- 1 bandit4 bandit3 33 Oct  5 06:19 .hidden` +
+`bandit3@bandit:~/inhere$ cat .hidden` +
+`[password redacted]`
+// 2EW7BBsr6aMMoJ2HjW067dm8EgX26xNe
+
+
+== Level 4 -> 5
+`$ ssh bandit4@bandit.labs.overthewire.org -p 2220` +
+`bandit4@bandit:~$ ls` +
+`inhere` +
+`bandit4@bandit:~$ cd inhere` +
+`bandit4@bandit:~/inhere$ ls` +
+`-file00  -file01  -file02  -file03  -file04  -file05  -file06  -file07  -file08  -file09` +
+`bandit4@bandit:~/inhere$ file ./*` +
+`./-file00: data` +
+`./-file01: data` +
+`./-file02: data` +
+`./-file03: data` +
+`./-file04: data` +
+`./-file05: data` +
+`./-file06: data` +
+`./-file07: ASCII text` +
+`./-file08: data` +
+`./-file09: data` +
+`bandit4@bandit:~/inhere$ cat ./-file07` +
+`[password redacted]`
+// lrIWWI6bB37kxfiCQZqUdOIYfr6eEeqR
+
+
+ 
