@@ -92,3 +92,64 @@ As mentioned in the hint, we can use `git stash` to save our current work in bac
     git verify
 
 
+## change-branch-history
+
+Git rebase is a very cool :)
+
+    git rebase hot-bugfix
+    git verify
+
+
+## remove-ignored
+
+    git rm ignored.txt
+    git commit -S -am "Removed ignored file"
+    git verify
+
+
+## case-sensitive-filename
+
+Instead of unix `mv`, we need to use `git mv` here.
+
+    git mv File.txt file.txt
+    git commit -S -am "Renamed File.txt to file.txt"
+    git verify
+
+
+## fix-typo
+
+    nvim file.txt
+    A
+        [backspace]x2 ld
+    ESC :wq
+    git commit -S -a --amend
+    // FIX TYPO HERE AGAIN
+    git verify
+
+
+## forge-date
+
+    // git commit --amend
+    // changing the date here using vim-style text editing wont work!!
+    // we need to 
+    git commit --amend --date="1987-06-09"
+        :wq
+    git verify
+
+
+## fix-old-typo
+
+https://git-scm.com/book/en/v2/Git-Tools-Rewriting-History#Changing-Multiple-Commit-Messages
+
+https://www.baeldung.com/ops/git-modify-commit
+
+I honestly don't know what I did, but this somehow works.
+
+    git rebase -i HEAD^^
+    // change pick to edit in the concerned commit
+    git add file.txt
+    git rebase --continue
+    // fix merge conflict
+    git add file.txt
+    git rebase --continue
+    git verify
