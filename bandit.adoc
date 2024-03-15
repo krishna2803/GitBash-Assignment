@@ -189,7 +189,7 @@ Here we can just create a python script that read all the lines of the file and 
 
 == Level 9 -> 10
 
-`$ strings data.txt | grep == `
+`$ strings data.txt | grep == ` +
 `x]T========== theG)"` +
 `========== passwordk^` +
 `========== is` +
