@@ -52,15 +52,14 @@ menu() {
 
         gpg_add_key_to_git
 
-        menu
-
     elif [ $choice -eq 0 ]; then
         exit
     else
         echo "Please choose a valid option"
-        menu
     fi
 }
 
 banner
-menu
+while true; do
+    menu
+done

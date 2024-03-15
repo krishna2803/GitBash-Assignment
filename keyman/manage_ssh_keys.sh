@@ -6,12 +6,12 @@ ssh_create() {
 
 ssh_add_key() {
     echo Starting SSH Agent
-    # eval $(ssh-agent)
+    eval $(ssh-agent)
     echo Keyfile to be added: \"$1\"
     echo Confirm? [Y]es/[n]o
     read confirmation
     if [ $confirmation = "n" ]; then
-        menu
+        return
     fi
     ssh-add $1
 }
