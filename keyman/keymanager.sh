@@ -34,13 +34,17 @@ menu() {
     echo -en "> "
 
     read choice
+    echo -e
+
     if [ $choice -eq 1 ]; then
         echo -en $BIYellow
        ssh_create
     elif [ $choice -eq 2 ]; then 
         echo -en $BIGreen
         echo -en "Write the path of the keyfile: "
+        echo -en $BIWhite
         read -r keyfile
+        echo -en $BIGreen
         ssh_add_key $keyfile
     elif [ $choice -eq 3 ]; then
         echo -en $BIPurple
