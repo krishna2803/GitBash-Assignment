@@ -157,7 +157,7 @@ From now on, I'll assume that we have already logged in to the server and got th
 `less` is another very helpful command which let's us analyse a fewer lines of the output at a time if the output is very large. It follows `vi` style keybindings, so we can search for the exact phrase in the output of `cat`.
 
 `$ cat data.txt | less` +
-Using standard vim style searching, search the word 'millionth' as `/millionth` and press enter. +
+Using standard vi style searching, search the word 'millionth' as `/millionth` and press enter. +
 `[\...]` +
 `huffy   WJDdimZChuTlmWvX1f00KQgSd3DI63in` +
 `millionth       [password redacted]` +
