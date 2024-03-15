@@ -40,7 +40,7 @@ menu() {
     elif [ $choice -eq 2 ]; then 
         echo -en $BIGreen
         echo -en "Write the path of the keyfile: "
-        read keyfile
+        read -r keyfile
         ssh_add_key $keyfile
     elif [ $choice -eq 3 ]; then
         echo -en $BIPurple
