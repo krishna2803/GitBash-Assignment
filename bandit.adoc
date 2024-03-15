@@ -168,6 +168,8 @@ Using standard vi style searching, search the word 'millionth' as `/millionth` a
 
 == Level 8 -> 9
 
+Here we can just create a python script that read all the lines of the file and create a hashmap to track the number of occurrences of each of the line. Then we can iterate through all the values in the hashmap and check if any of the values has only 1 occurence. This solves this problem in `O(n)` time. A more technical but easier solution would be to do `sort data.txt | uniq -u` but that would take `O(n log(n))`. Not that it matters but I wanted to try something new this time so I did the scripting approach.
+
 `$ python3` +
 `>>> lines = {}` +
 `>>> with open('data.txt', 'r') as file:` +
