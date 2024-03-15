@@ -189,6 +189,8 @@ Here we can just create a python script that read all the lines of the file and 
 
 == Level 9 -> 10
 
+We will use the `grep` command here which is kind of like a text search thingy on *nix shells. We know there are multiple `==` in the name, so we'll start with two `=` and then find the password.
+
 `$ strings data.txt | grep ==` +
 `x]T========== theG)"` +
 `========== passwordk^` +
@@ -199,12 +201,16 @@ Here we can just create a python script that read all the lines of the file and 
 
 == Level 10 -> 11
 
+`base64 -d` can be used to decode base64 strings. We pipe the data supplied by the cat command into `base64 -d`.
+
 `$ cat data.txt | base64 -d` +
 `The password is [password redacted ]` +
 // 6zPeziLdR2RKNdNYFNb6nVCKzphlXHBM
 
 
 == Level 11 -> 12
+
+I read `tr` as "text replacement" command. Although it actually is shorthand for "translating". It can be used to modify, remove, replace text etc. For `rot13`, we need to push every character by 13 characters mod 13. So, alphabets 1 to 13 go to 14 to 26 and alphabets 14 to 26 go to 13 to 26. 
 
 `$ cat data.txt | tr 'A-Za-z' 'N-ZA-Mn-za-m'` +
 (x + 13) mod 26 + 
@@ -214,30 +220,47 @@ Here we can just create a python script that read all the lines of the file and 
 
 == Level 12 -> 13
 
+Copy the data file to `/tmp`. By `cat`ing the file, we can see that it is a `hexdump -C` output of some file. We wee reverse this using `xxd -r`.
+
 `$ mkdir /tmp/krishna2803` +
 `$ cd /tmp/krishna2803` + 
 `$ cp ~/data.txt .` + 
-To reverse the hexdump, we will use `xxd -r` +
+
+using `xxd -r` +
 
 `$ xxd -r data.txt data` +
 `$ file data` +
 `data: gzip compressed data, was "data2.bin", last modified: Thu Oct  5 06:19:20 2023, max compression, from Unix, original size modulo 2^32 573` +
-This is a `gz` file. +
+
+We can see that this is a `gz` archive. To decompress it correctly, we have to rename it. For that, we will use the `mv oldname newname` command.
+
 `$ mv data data.gz && gzip -d data.gz` +
 `$ file data` +
 `data: bzip2 compressed data, block size = 900k` +
+
+Now this is a `bzip2` archive. To decompress this, we'll just use the `bzip2` command.
+
 `$ bzip2 -d data` +
 `bzip2: Can't guess original name for data -- using data.out` +
 `$ file data.out` +
 `data.out: gzip compressed data, was "data4.bin", last modified: Thu Oct  5 06:19:20 2023, max compression, from Unix, original size modulo 2^32 20480` +
+
+Again, a `gz` archive.
+
 `$ mv data.out data.gz && gzip -d data.gz` +
 `$ ls` +
 `data data.txt` + 
 `$ file data` + 
 `data: POSIX tar archive (GNU)` +
+
+Now this is a `tarball` or a `tar` (tape archive) file. To extract the data, we'll use the `tar xvf` command. `v` here is redundant, it just gives verbosity, `x` means we need to extract, `f` means that it is a file.
+
 `$ tar xvf data` + 
-Followed by a series of `tar xvf` and `gzip -d`, we get: +
-`The password is [password redacted]` +
+
+Followed by a series of `tar xvf` and `gzip -d`, we get:
+
+`The password is [password redacted]`
+
 in a ASCII Plaintext file
 // wbWdlBxEir4CaE8LaPhauuOo6pwRmrDw
 
@@ -249,19 +272,27 @@ in a ASCII Plaintext file
 `$ cat sshkey.private` +
 `-----BEGIN RSA PRIVATE KEY-----` +
 `[\...]` +
-`-----END RSA PRIVATE KEY-----` +
-Copy this key and login to `bandit14` using this key. Remember to change the permissions to 700 +
+`-----END RSA PRIVATE KEY-----`
+
+Copy this key and login to `bandit14` using this key. Remember to change the permissions to 700.
+
+Now, `ssh -i` can be used to login to the next user.
+
 `$ ssh -i key bandit14@bandit.labs.overthewire.org -p 2220` 
 
 
 == Level 14 -> 15
+
+`netcat` or `nc` is a versatile tool utilized for reading, writing, redirecting data across networks. Last level mentioned that the password is stored in `/etc/bandit_pass/bandit14` file so we just copy and paste the password to the loopback. `nc -l` can open a `listener` and `-p` supplies the port at which it should be opened.
 
 Using hints from the previous level. +
 `$ cat /etc/bandit_pass/bandit14` +
 `[password redacted]` +
 // fGrHPx402xGC7U7rXKDaxiWFTOiF0ENq
 `$ nc 127.0.0.1 30000` +
-Submit the password for the current level +
+
+Just enter the password here.
+
 `Correct!` + 
 `[password redacted]`
 // jN2kgmIXJ6fShzhT2avhotn4Zcka6tnt
@@ -269,6 +300,7 @@ Submit the password for the current level +
 
 == Level 15 -> 16
 
+To securely opening a listener, we will use the openssl s client. More info here: +
 https://www.openssl.org/docs/man1.0.2/man1/openssl-s_client.html
 
 `$ openssl s_client -connect 127.0.0.1:30001` +
@@ -278,6 +310,8 @@ https://www.openssl.org/docs/man1.0.2/man1/openssl-s_client.html
 
 
 == Level 16 -> 17
+
+`nmap` is a great tool, that can be used to scan open ports here. Using that we identified that there is just one non-echoing ssl port, 31790 so we connect to that and then do then submit the password.
 
 `$ nmap -sV 127.0.0.1 -p 31000-32000` +
 `31046/tcp open  echo` +
@@ -291,6 +325,10 @@ https://www.openssl.org/docs/man1.0.2/man1/openssl-s_client.html
 
 == Level 17 -> 18
 
+We will have to login using the RSA key we got in the last level, using `ssh -i`
+
+To compare differences between two files, we use the `diff` utility.
+
 `$ diff passwords.old passwords.new` +
 `42c42` +
 `< p6ggwdNHncnmCNxuAt0KtKVq185ZU7AW` +
@@ -301,6 +339,10 @@ https://www.openssl.org/docs/man1.0.2/man1/openssl-s_client.html
 
 == Level 18 -> 19
 
+An interesting thing about ssh is we don't need to login to shell to get the command. We can just run the command before we login to the shell so our command gets priority over `.bash-login` file.
+
+Using `cat *`, we can print all the contents of all files in the server.
+
 `$ ssh bandit18@bandit.labs.overthewire.org -p 2220 "cat *"` +
 `[password redacted]`+
 // awhqfNnAbc1naukrpqDYcF95h7HoMTrC
@@ -308,6 +350,7 @@ https://www.openssl.org/docs/man1.0.2/man1/openssl-s_client.html
 
 == Level 19 -> 20
 
+Just supply the binary with the password here. Nothing much to do.
 
 `$ ./bandit20-do cat /etc/bandit_pass/bandit20` +
 `[password redacted]` +
@@ -319,6 +362,9 @@ https://www.openssl.org/docs/man1.0.2/man1/openssl-s_client.html
 Just let the thing run in the background by forking the process:
 
 `$ echo "[current password]" | nc -l -p 6969 & disown` +
+
+Now, run the binary and supply the password to it.
+
 `$ ./suconnect 6969` +
 `Read: [current password]` +
 `Password matches, sending next password` +
